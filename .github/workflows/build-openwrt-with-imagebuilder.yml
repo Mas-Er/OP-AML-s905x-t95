@@ -1,9 +1,8 @@
 #=====================================================================================
 # https://github.com/ophub/amlogic-s9xxx-openwrt
-# Description:   Build OpenWrt with Image Builder
-# Instructions:  https://openwrt.org/docs/guide-user/additional-software/imagebuilder
-# Download from: https://downloads.openwrt.org/releases
-#                https://downloads.immortalwrt.org/releases
+# Description: Build OpenWrt with Image Builder
+# Instructions: https://openwrt.org/docs/guide-user/additional-software/imagebuilder
+# Download options: https://downloads.openwrt.org/releases
 #=====================================================================================
 
 name: Build OpenWrt with ImageBuilder
@@ -12,140 +11,54 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      releases_branch:
+      branch:
         description: "Select the releases branch"
         required: false
-        default: "openwrt:22.03.3"
+        default: "22.03.3"
         type: choice
         options:
-          - openwrt:22.03.5
-          - openwrt:22.03.4
-          - openwrt:22.03.3
-          - openwrt:21.02.7
-          - openwrt:21.02.6
-          - openwrt:21.02.5
-          - openwrt:19.07.10
-          - openwrt:18.06.9
-          - immortalwrt:21.02.6
-          - immortalwrt:21.02.5
-          - immortalwrt:21.02.4
+          - 22.03.3
+          - 21.02.5
+          - 19.07.10
+          - 18.06.9
       openwrt_board:
-        description: "Select device board"
+        description: "Select Amlogic board"
         required: false
-        default: "all"
+        default: "s905x3_s905d_s912"
         type: choice
         options:
           - all
-          - s922x_s905x3_s905d_s912_s905l3a
-          - s905x-t95_s912-t95z-plus_s905l3-unt400g1
-          - s905d
-          - s905d-ki-pro
-          - s905x
-          - s905x-tx9
-          - s905x-t95
-          - s905x-b860h
-          - s905x-tbee
-          - s905w
-          - s905w-w95
-          - s905w-x96w
-          - s905w-x96-mini
-          - s905l2
-          - s905l2-wojia
-          - s905l2-e900v21e
-          - s905l3
-          - s905l3-cm211
-          - s905l3-unt400g1
-          - s905l3a
-          - s905l3a-cm311
-          - s905l3a-m401a
-          - s905l3b
-          - s905l3b-e900v22e
-          - s905l3b-e900v22d
-          - s905l3b-ip103h
-          - s905lb-q96-mini
-          - s905lb-r3300l
-          - s912
-          - s912-zyxq-fake
-          - s912-h96pro-plus
-          - s912-tx92
-          - s912-z6-plus
-          - s912-m8s-pro
-          - s912-t95z-plus
-          - s912-tx9-pro-3g
-          - s912-tx9-pro-2g
-          - s912-nexbox-a1
-          - s912-nexbox-a2
-          - s912-tx8-max
-          - s912-x92
-          - s912-phicomm-t1
-          - s905x2
-          - s905x2-x96max-2g
-          - s905x2-km3
+          - s905x3_s905d_s912
           - a311d
           - s922x
-          - s922x-gtking
-          - s922x-gtkingpro-h
+          - s922x-n2
           - s922x-reva
-          - s922x-odroid-n2
-          - s922x-ugoos-am6
-          - s922x-ct2000
           - s905x3
-          - s905x3-hk1
-          - s905x3-x96max
-          - s905x3-h96max
-          - s905x3-ugoosx3
-          - s905x3-tx3
-          - s905x3-tx3-bz
-          - s905x3-a95xf3
-          - s905x3-a95xf3-gb
-          - s905x3-x96air
-          - s905x3-x96air-gb
-          - s905x3-ip1001m
-          - s905x3-q1
-          - s905x3-q2
-          - s905x3-q1000
-          - s905x3-a100
-          - s905x3-2101
-          - s905x3-whale
           - s905x3-b
+          - s905x2
+          - s905x2-km3
+          - s912
+          - s912-m8s
+          - s905d
+          - s905d-ki
+          - s905x
+          - s905w
           - s905
-          - s905-mxqpro-plus
-          - s905-beelink-mini
-          - rock5b
-          - h88k
-          - ipc-r
-          - r66s
-          - r68s
-          - h66k
-          - h68k
-          - e25
-          - nanopi-r5s
-          - panther-x2
-          - eaidk-610
-          - king3399
-          - tn3399
-          - kylin3399
-          - hugsun-zm
-          - crrc
-          - smart-am40
-          - sw799
-          - zysj
-          - beikeyun
-          - l1pro
-          - station-m1
-          - vplus
-          - tanix-tx6
+          - s905l3a
+          - s905l2
       openwrt_kernel:
         description: "Select kernel version"
         required: false
-        default: "5.15.1_6.1.1"
+        default: "5.15.85_6.1.1"
         type: choice
         options:
-          - 5.4.1_5.10.1
-          - 5.15.1_6.1.1
-          - 5.4.1
-          - 5.10.1
-          - 5.15.1
+          - 5.4.225_5.10.160_5.15.85
+          - 5.4.225_5.10.160
+          - 5.10.160_5.15.85
+          - 5.15.85_6.1.1
+          - 5.4.225
+          - 5.10.160
+          - 5.15.85
           - 6.1.1
       auto_kernel:
         description: "Auto use the latest kernel"
@@ -155,23 +68,15 @@ on:
       kernel_repo:
         description: "Set the kernel repository"
         required: false
-        default: "ophub/kernel"
-        type: choice
-        options:
-          - ophub/kernel
-      kernel_usage:
-        description: "Set the tags of the stable kernel."
+        default: "https://github.com/ophub/kernel/tree/main/pub"
+      openwrt_size:
+        description: "Set the rootfs size(Unit: MiB)"
         required: false
-        default: "stable"
-        type: choice
-        options:
-          - stable
-          - flippy
-          - dev
+        default: "1024"
 
 env:
   TZ: America/New_York
-  IMAGEBUILDER_SH: config-openwrt/imagebuilder/imagebuilder.sh
+  IMAGEBUILDER_SH: router-config/openwrt-imagebuilder/imagebuilder.sh
 
 jobs:
   build:
@@ -188,26 +93,24 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           docker rmi `docker images -q`
-          [[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
           sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
-          sudo -E apt-get -y update
-          sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
-          sudo -E apt-get -y install $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
-          sudo -E systemctl daemon-reload
-          #sudo -E apt-get -y full-upgrade
-          sudo -E apt-get -y autoremove --purge
-          sudo -E apt-get clean
+          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mongodb* dotnet* moby* snapd* || true
+          sudo -E apt-get -qq update -y
+          sudo -E apt-get -qq full-upgrade -y
+          sudo -E apt-get -qq install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
           sudo timedatectl set-timezone "${TZ}"
           echo "status=success" >> ${GITHUB_OUTPUT}
 
-      - name: Build Rootfs with Image Builder [ ${{ inputs.releases_branch }} ]
+      - name: Build Rootfs with Image Builder
         id: imagebuilder
         if: ${{ steps.init.outputs.status }} == 'success' && !cancelled()
         run: |
-          RELEASES_BRANCH="${{ inputs.releases_branch }}"
+          RELEASES_BRANCH="${{ inputs.branch }}"
           chmod +x ${IMAGEBUILDER_SH}
           ${IMAGEBUILDER_SH} ${RELEASES_BRANCH}
-          echo "RELEASES_TAG=${RELEASES_BRANCH/:/_}" >> ${GITHUB_ENV}
+          echo "RELEASES_BRANCH=${RELEASES_BRANCH}" >> ${GITHUB_ENV}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Clean up server space
@@ -226,27 +129,23 @@ jobs:
           openwrt_kernel: ${{ inputs.openwrt_kernel }}
           auto_kernel: ${{ inputs.auto_kernel }}
           kernel_repo: ${{ inputs.kernel_repo }}
-          kernel_usage: ${{ inputs.kernel_usage }}
+          openwrt_size: ${{ inputs.openwrt_size }}
           gh_token: ${{ secrets.GH_TOKEN }}
 
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
         if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
         with:
-          tag: OpenWrt_imagebuilder_${{ env.RELEASES_TAG }}_${{ env.PACKAGED_OUTPUTDATE }}
+          tag: OpenWrt_Aml_imagebuilder_${{ env.RELEASES_BRANCH }}_${{ env.PACKAGED_OUTPUTDATE }}
           artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
           allowUpdates: true
-          removeArtifacts: false
-          replacesArtifacts: true
           token: ${{ secrets.GH_TOKEN }}
           body: |
-            ### OpenWrt Image information
-            - Default IP: 192.168.1.1
-            - Default username: root
-            - Default password: password
-            - Default WIFI name: OpenWrt
-            - Default WIFI password: none
-            ### Install to EMMC
-            - Login to OpenWrt → System → Amlogic Service → Install OpenWrt
-            ### OpenWrt Image Verification
-            - sha256sum
+            This is OpenWrt firmware for Amlogic s9xxx tv box
+            * Firmware information
+            Default IP: 192.168.1.1
+            Default username: root
+            Default password: password
+            Default WIFI name: OpenWrt
+            Default WIFI password: none
+            Install to EMMC: Login to OpenWrt → System → Amlogic Service → Install OpenWrt

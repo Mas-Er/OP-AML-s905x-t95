@@ -17,17 +17,20 @@ on:
         type: choice
         options:
           - unifreq
+          - kernel.org
       kernel_version:
         description: "Select kernel version"
         required: false
-        default: "5.15.1_6.1.1"
+        default: "5.15.85_6.1.1"
         type: choice
         options:
-          - 5.4.1_5.10.1
-          - 5.15.1_6.1.1
-          - 5.4.1
-          - 5.10.1
-          - 5.15.1
+          - 5.4.225_5.10.160_5.15.85
+          - 5.4.225_5.10.160
+          - 5.10.160_5.15.85
+          - 5.15.85_6.1.1
+          - 5.4.225
+          - 5.10.160
+          - 5.15.85
           - 6.1.1
       kernel_auto:
         description: "Auto use the latest kernel"
@@ -45,7 +48,7 @@ on:
       kernel_toolchain:
         description: "Select the compilation toolchain"
         required: false
-        default: "gcc"
+        default: "clang"
         type: choice
         options:
           - clang
@@ -54,10 +57,10 @@ on:
         description: "Set the kernel custom signature"
         required: false
         default: "-ophub"
-        type: choice
-        options:
-          - -ophub
-          - -yourname
+      kernel_config:
+        description: "Set the path of kernel .config"
+        required: false
+        default: ""
 
 env:
   TZ: America/New_York
@@ -77,19 +80,17 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           docker rmi `docker images -q`
-          [[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
           sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
-          sudo -E apt-get -y update
-          sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
-          sudo -E apt-get -y install $(curl -fsSL https://is.gd/depend_ubuntu2204_armbian)
-          sudo -E systemctl daemon-reload
-          #sudo -E apt-get -y full-upgrade
-          sudo -E apt-get -y autoremove --purge
-          sudo -E apt-get clean
+          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mongodb* dotnet* moby* snapd* || true
+          sudo -E apt-get -qq update -y
+          sudo -E apt-get -qq full-upgrade -y
+          sudo -E apt-get -qq install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_armbian)
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
           sudo timedatectl set-timezone "${TZ}"
           echo "status=success" >> ${GITHUB_OUTPUT}
 
-      - name: Compile the kernel [ ${{ inputs.kernel_version }} ]
+      - name: Compile the kernel
         uses: ophub/amlogic-s9xxx-armbian@main
         if: ${{ steps.init.outputs.status }} == 'success' && !cancelled()
         with:
@@ -98,14 +99,15 @@ jobs:
           kernel_version: ${{ inputs.kernel_version }}
           kernel_auto: ${{ inputs.kernel_auto }}
           kernel_package: ${{ inputs.kernel_package }}
-          kernel_sign: ${{ inputs.kernel_sign }}
           kernel_toolchain: ${{ inputs.kernel_toolchain }}
+          kernel_sign: ${{ inputs.kernel_sign }}
+          kernel_config: ${{ inputs.kernel_config }}
 
       - name: Upload Kernel to Release
         uses: ncipollo/release-action@main
         if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
         with:
-          tag: kernel_stable
+          tag: kernel_${{ env.PACKAGED_OUTPUTTAGS }}
           artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
           allowUpdates: true
           token: ${{ secrets.GH_TOKEN }}

@@ -146,7 +146,7 @@ jobs:
           cd openwrt/
           echo -e "$(nproc) thread compile"
           make -j$(($(nproc) + 1)) V=s || make -j1 || make -j1 V=s
-          echo "build_tag=KarnadiWrt_Aml_immortalwrt_$(date +"%m.%d.%H%M")" >> ${GITHUB_OUTPUT}
+          echo "build_tag=KangrisWrt_Aml_immortalwrt_$(date +"%m.%d.%H%M")" >> ${GITHUB_OUTPUT}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Upload OpenWrt Firmware to Release
@@ -186,11 +186,11 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GH_TOKEN }}
           body: |
-            This is KarnadiWrt, custom openwrt firmware based on ImmortalWrt and ROOter for Amlogic s9xxx tv box
+            This is KangrisWrt, custom openwrt firmware based on ImmortalWrt and ROOter for Amlogic s9xxx tv box
             * Firmware information
-            Default IP: 11.11.1.1 (esier to type IP)
+            Default IP: 192.168.1.1
             Default username: root
-            Default password: password
-            Default WIFI name: KarnadiWrt
+            Default password: none
+            Default WIFI name: KangrisWrt
             Default WIFI password: none
             Install to EMMC: Login to OpenWrt → System → Amlogic Service → Install OpenWrt

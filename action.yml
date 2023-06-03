@@ -1,35 +1,35 @@
-name: "Use ophub script to package Armvirt as OpenWrt"
-author: "ophub"
-description: "Package Armvirt as OpenWrt. Support Amlogic s9xxx tv box."
+name: "Make OpenWrt"
+author: "https://github.com/ophub/amlogic-s9xxx-openwrt"
+description: "Support Amlogic, Rockchip and Allwinner boxes."
 inputs:
   mode:
-    description: "Choose script."
+    description: "Select script."
     required: false
     default: "ophub"
   openwrt_path:
-    description: "Choose armvirt64 file path."
+    description: "Select armvirt64 file path."
     required: false
     default: "openwrt/bin/targets/*/*/*rootfs.tar.gz"
   openwrt_board:
-    description: "Choose Amlogic board."
+    description: "Select device board."
     required: false
-    default: "s905d_s905x3"
+    default: "all"
+  kernel_repo:
+    description: "Select kernel repository."
+    required: false
+    default: "ophub/kernel"
+  kernel_usage:
+    description: "Set the tags of the stable kernel."
+    required: false
+    default: "stable"
   openwrt_kernel:
-    description: "Choose kernel version."
+    description: "Select kernel version."
     required: false
-    default: "5.10.125_5.15.50"
+    default: "6.1.1_5.15.1"
   auto_kernel:
     description: "Auto use the latest kernel."
     required: false
     default: "true"
-  version_branch:
-    description: "Choose version branch."
-    required: false
-    default: "stable"
-  kernel_repo:
-    description: "Choose kernel repository."
-    required: false
-    default: "https://github.com/ophub/kernel/tree/main/pub"
   openwrt_size:
     description: "Set the rootfs size(Unit: MiB)."
     required: false
@@ -76,13 +76,20 @@ runs:
         echo -e "Start to make openwrt..."
         make_command=""
         [[ -n "${{ inputs.openwrt_board }}" ]] && make_command="${make_command} -b ${{ inputs.openwrt_board }}"
+        [[ -n "${{ inputs.kernel_repo }}" ]] && make_command="${make_command} -r ${{ inputs.kernel_repo }}"
+        [[ -n "${{ inputs.kernel_usage }}" ]] && make_command="${make_command} -u ${{ inputs.kernel_usage }}"
         [[ -n "${{ inputs.openwrt_kernel }}" ]] && make_command="${make_command} -k ${{ inputs.openwrt_kernel }}"
         [[ -n "${{ inputs.auto_kernel }}" ]] && make_command="${make_command} -a ${{ inputs.auto_kernel }}"
-        [[ -n "${{ inputs.version_branch }}" ]] && make_command="${make_command} -v ${{ inputs.version_branch }}"
-        [[ -n "${{ inputs.kernel_repo }}" ]] && make_command="${make_command} -r ${{ inputs.kernel_repo }}"
         [[ -n "${{ inputs.openwrt_size }}" ]] && make_command="${make_command} -s ${{ inputs.openwrt_size }}"
         [[ -n "${{ inputs.gh_token }}" ]] && make_command="${make_command} -g ${{ inputs.gh_token }}"
         sudo ./make ${make_command}
+
+        cd ${GITHUB_ACTION_PATH}/${openwrt_outpath}
+        # Copy and save an original rootfs.tar.gz file
+        cp -f ../${openwrt_savepath}/*rootfs.tar.gz .
+        # Generate a sha256sum verification file for each OpenWrt image file
+        for file in *; do [[ ! -d "${file}" ]] && sha256sum "${file}" >"${file}.sha"; done
+        sync && sleep 3
 
         cd ${GITHUB_ACTION_PATH}
         echo -e "Output environment variables."

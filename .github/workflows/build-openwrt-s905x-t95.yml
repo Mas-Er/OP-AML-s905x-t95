@@ -4,7 +4,7 @@
 # Source code repository: https://github.com/immortalwrt/immortalwrt / Branch: openwrt-21.02
 #============================================================================================
 
-name: Build Universal OpenWrt with immortalwrt
+name: Build s905x-t95 OpenWrt with immortalwrt
 
 on:
   repository_dispatch:
@@ -62,13 +62,13 @@ on:
       openwrt_size:
         description: "Set the rootfs size(Unit: MiB)"
         required: false
-        default: "1024"
+        default: "2048"
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-21.02
+  REPO_BRANCH: openwrt-23.05
   FEEDS_CONF: router-config/immortalwrt-21.02/feeds.conf.default
-  CONFIG_FILE: router-config/immortalwrt-21.02/universal.config
+  CONFIG_FILE: router-config/immortalwrt-21.02/config
   DIY_P1_SH: router-config/immortalwrt-21.02/diy-part1.sh
   DIY_P2_SH: router-config/immortalwrt-21.02/diy-part2.sh
   TZ: America/New_York
@@ -190,7 +190,7 @@ jobs:
             * Firmware information
             Default IP: 11.11.1.1 (esier to type IP)
             Default username: root
-            Default password: password
-            Default WIFI name: KarnadiWrt
+            Default password: blank
+            Default WIFI name: KangrisWrt
             Default WIFI password: none
             Install to EMMC: Login to OpenWrt → System → Amlogic Service → Install OpenWrt

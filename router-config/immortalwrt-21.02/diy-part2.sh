@@ -23,8 +23,8 @@ sed -i '27 i\uci uci set luci.main.mediaurlbase="/luci-static-argon/"\nuci commi
 # sed -i 's/192.168.1.1/11.11.1.1/g' package/base-files/files/bin/config_generate
 
 # Set banner
-rm -rf ./package/emortal/default-settings/files/openwrt_banner
-svn export https://github.com/karnadii/KarnadiWrt/trunk/amlogic-s9xxx/common-files/rootfs/etc/banner package/emortal/default-settings/files/openwrt_banner
+# rm -rf ./package/emortal/default-settings/files/openwrt_banner
+# svn export https://github.com/karnadii/KarnadiWrt/trunk/amlogic-s9xxx/common-files/rootfs/etc/banner package/emortal/default-settings/files/openwrt_banner
 
 # Add the default password for the 'root' user（Change the empty password to 'password'）
 # sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' package/base-files/files/etc/shadow

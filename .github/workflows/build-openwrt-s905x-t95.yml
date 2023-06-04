@@ -62,11 +62,11 @@ on:
       openwrt_size:
         description: "Set the rootfs size(Unit: MiB)"
         required: false
-        default: "2048"
+        default: "1024"
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-23.05
+  REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: router-config/immortalwrt-21.02/feeds.conf.default
   CONFIG_FILE: router-config/immortalwrt-21.02/config
   DIY_P1_SH: router-config/immortalwrt-21.02/diy-part1.sh

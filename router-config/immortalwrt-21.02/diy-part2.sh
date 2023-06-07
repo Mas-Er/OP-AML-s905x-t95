@@ -23,7 +23,7 @@ sed -i '27 i\uci uci set luci.main.mediaurlbase="/luci-static-argon/"\nuci commi
 # sed -i 's/192.168.1.1/11.11.1.1/g' package/base-files/files/bin/config_generate
 
 # Set banner
-# rm -rf ./package/emortal/default-settings/files/openwrt_banner
+#rm -rf ./package/emortal/default-settings/files/openwrt_banner
 # svn export https://github.com/karnadii/KarnadiWrt/trunk/amlogic-s9xxx/common-files/rootfs/etc/banner package/emortal/default-settings/files/openwrt_banner
 
 # Add the default password for the 'root' user（Change the empty password to 'password'）
@@ -59,13 +59,13 @@ svn co https://github.com/ophub/luci-app-amlogic/trunk/luci-app-amlogic package/
 svn co https://github.com/hubutui/p7zip-lede/trunk package/p7zip
 
 # Add luci-app-tinyfilemanager
-#svn co https://github.com/lynxnexy/luci-app-tinyfilemanager/trunk package/luci-app-tinyfilemanager
+# svn co https://github.com/lynxnexy/luci-app-tinyfilemanager/trunk package/luci-app-tinyfilemanager
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-tinyfm package/luci-app-tinyfm
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-libernet-plus package/luci-app-libernet-plus
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-libernet-bin package/luci-app-libernet-bin
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-mulimiter package/luci-app-mulimiter
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-myxllite package/luci-app-myxllite
-# svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-netmon package/luci-app-netmon
+svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-netmon package/luci-app-netmon
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/luci-app-openspeedtest package/luci-app-openspeedtest
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/badvpn package/badvpn
 svn co https://github.com/helmiau/helmiwrt-packages/trunk/corkscrew package/corkscrew
@@ -158,8 +158,8 @@ svn co https://github.com/karnadii/rooter/trunk/package/rooter/0optionalapps/bwm
 svn co https://github.com/karnadii/rooter/trunk/package/rooter/0optionalapps/ext-throttle package/ext-throttle
 
 # disable banner from rooter
-sudo chmod -x package/ext-rooter-basic/files/etc/init.d/bannerset
-sed -i 's/luci-theme-openwrt-2020/luci-theme-argon/g' package/ext-rooter-basic/Makefile
+# sudo chmod -x package/ext-rooter-basic/files/etc/init.d/bannerset
+# sed -i 's/luci-theme-openwrt-2020/luci-theme-argon/g' package/ext-rooter-basic/Makefile
 # Add luci-app-3ginfo
 # svn co https://github.com/lynxnexy/luci-app-3ginfo/trunk package/luci-app-3ginfo
 # Add luci-app-atinout-mod
@@ -214,5 +214,4 @@ EOF
 sed -i "s/yacd/Yet Another Clash Dashboard/g" package/luci-app-openclash/root/usr/share/openclash/ui/yacd/manifest.webmanifest
 sed -i '94s/80/90/g' package/luci-app-openclash/luasrc/controller/openclash.lua
 sed -i '94 i\	entry({"admin", "services", "openclash", "editor"}, template("openclash/editor"),_("Config Editor"), 80).leaf = true' package/luci-app-openclash/luasrc/controller/openclash.lua
-
 
